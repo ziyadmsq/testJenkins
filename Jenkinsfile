@@ -3,67 +3,77 @@ pipeline {
    stages {
       stage('Setup'){
          steps {
-            sh 'python3 -m venv ~/.devops
-               source ~/.devops/bin/activate
-               make install
-               brew install hadolint
-               brew cask install virtualbox
-               brew cask install minikube'
+            sh 'ls'
+            // sh 'python3 -m venv ~/.devops
+            //    source ~/.devops/bin/activate
+            //    make install
+            //    brew install hadolint
+            //    brew cask install virtualbox
+            //    brew cask install minikube'
          }
       }
       stage('Lint Dockerfile') {
          steps {
-            sh 'hadolint Dockerfile'
+            sh 'ls'
+            // sh 'hadolint Dockerfile'
          }
       }
       stage('Build Image') {
          steps {
             script{
-               sh 'docker build --tag=machine-learning-microservice .'
+               sh 'ls'
+               // sh 'docker build --tag=machine-learning-microservice .'
             }
          }
       }
       stage('Push Image'){
          steps {
-            	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
-               sh '''
-                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-						docker push ziyadmsq/machine-learning-microservice:$BUILD_ID
-                  '''
-               // sh '''make docker-push"
+            script{
+               sh 'ls'
+               // sh 'docker build --tag=machine-learning-microservice .'
             }
+            // 	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+            //    sh '''
+            //       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+				// 		docker push ziyadmsq/machine-learning-microservice:$BUILD_ID
+            //       '''
+            //    // sh '''make docker-push"
+            // }
          }
       }
       stage('Create Cluster'){
          steps{
             script{
-               sh 'pip install awscli --upgrade
-                  curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-                  sudo mv /tmp/eksctl /usr/local/bin
-                  eksctl create cluster \
-                  --name prod \
-                  --version 1.14 \
-                  --nodegroup-name standard-workers \
-                  --node-type t3.medium \
-                  --nodes 3 \
-                  --nodes-min 1 \
-                  --nodes-max 4 \
-                  --node-ami auto
-                  kubectl get svc'
+               sh 'ls'
+               // sh 'pip install awscli --upgrade
+               //    curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+               //    sudo mv /tmp/eksctl /usr/local/bin
+               //    eksctl create cluster \
+               //    --name prod \
+               //    --version 1.14 \
+               //    --nodegroup-name standard-workers \
+               //    --node-type t3.medium \
+               //    --nodes 3 \
+               //    --nodes-min 1 \
+               //    --nodes-max 4 \
+               //    --node-ami auto
+               //    kubectl get svc'
             }
          }
       }
       stage('kubectl config'){
          steps{
             script{
-               sh 'aws eks --region us-east-1 update-kubeconfig --name prod'
+               sh 'ls'
+               // sh 'aws eks --region us-east-1 update-kubeconfig --name prod'
             }
          }
       }
       stage('Deploy Kubernetes'){
         steps{
             script{
-                sh "make kube-deploy"
+               sh 'ls'
+               // sh "make kube-deploy"
             }
         }
       }
